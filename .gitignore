@@ -1,2 +1,5 @@
 # Local DB
 local.db
+
+# Sensitive data
+users.go

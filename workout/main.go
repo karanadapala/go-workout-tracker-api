@@ -1,25 +1,22 @@
 package workout
 
-import (
-	"fmt"
-	"time"
+import "math"
+
+type Increase float64
+
+const (
+	TenPercent     Increase = 0.1
+	TwentyPercent  Increase = 0.2
+	ThirtyPercent  Increase = 0.3
+	FortyPercent   Increase = 0.4
+	FiftyPercent   Increase = 0.5
+	SixtyPercent   Increase = 0.6
+	SeventyPercent Increase = 0.7
+	EightyPercent  Increase = 0.8
+	NintyPercent   Increase = 0.9
+	HundredPercent Increase = 1.0
 )
 
-func GetWeeksTimeStamp(weekOffSet int) string {
-	currDayTimestamp := time.Now().Truncate(time.Hour * 24)
-	fmt.Printf("Current Day's Timestamp: %v\n", currDayTimestamp)
-	currWeekDay := currDayTimestamp.Weekday()
-	fmt.Printf("Current Week Day: %v\n", currWeekDay)
-	sinceWeekStart := time.Duration(currWeekDay)*24*time.Hour + time.Duration(currDayTimestamp.Hour()*int(time.Hour))
-	fmt.Printf("Hours since Week's start: %v\n", -sinceWeekStart)
-	currWeeksTimestamp := currDayTimestamp.Add(-sinceWeekStart)
-	offsetTimestamp := currWeeksTimestamp.Add(-(time.Duration(weekOffSet) * 24 * 7 * time.Hour))
-	return offsetTimestamp.Format(time.RFC3339)
+func CalculateIncrease(number int, increase Increase) int {
+	return int(math.Ceil(float64(number) * float64(increase)))
 }
-
-// func main() {
-// 	currWeeksTimestamp := getWeeksTimeStamp(0)
-// 	fmt.Printf("Current Week's timestamp: %v\n", currWeeksTimestamp)
-// 	lastWeeksTimestamp := getWeeksTimeStamp(1)
-// 	fmt.Printf("Previous Week's timestamp: %v\n", lastWeeksTimestamp)
-// }

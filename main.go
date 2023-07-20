@@ -1,6 +1,7 @@
 package main
 
 import (
+	dbservice "goworkouttrackerapi/dbService"
 	"goworkouttrackerapi/workout"
 
 	"net/http"
@@ -10,6 +11,10 @@ import (
 
 type Timestamp struct {
 	Timestamp string `json:"timestamp"`
+}
+
+type Workouts struct {
+	Workouts []dbservice.WorkoutTable `json:"workouts"`
 }
 
 func getCurrWeeksTimestamp(context *gin.Context) {
@@ -27,9 +32,20 @@ func getPrevWeeksTimestamp(context *gin.Context) {
 	context.IndentedJSON(http.StatusOK, returnObj)
 }
 
+func getWorkouts(context *gin.Context) {
+	db := dbservice.ConnectToDB()
+	dbservice.InitailizeDB(db)
+	workouts := dbservice.GetAllRowsFromWorkout(db)
+	var returnObj = Workouts{
+		Workouts: workouts,
+	}
+	context.IndentedJSON(http.StatusOK, returnObj)
+}
+
 func main() {
 	router := gin.Default()
 	router.GET("/this-week", getCurrWeeksTimestamp)
 	router.GET("/prev-week", getPrevWeeksTimestamp)
+	router.GET("/workouts", getWorkouts)
 	router.Run("localhost:8989")
 }
