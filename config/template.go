@@ -21,7 +21,7 @@ var BaseTemplate = BaseWeeklyTemplate{
 	},
 	"thursday": BaseWorkDay{
 		MainWorkout: []WorkoutNameIds{
-			"kb-half-turkish-get-up",
+			"kb-turkish-get-up",
 			"kb-alt-snatches",
 		},
 	},
