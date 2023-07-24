@@ -3,7 +3,9 @@ package main
 import (
 	"goworkouttrackerapi/config"
 	dbservice "goworkouttrackerapi/dbService"
+	"goworkouttrackerapi/errors"
 	"goworkouttrackerapi/workout"
+	"strconv"
 
 	"net/http"
 
@@ -43,8 +45,15 @@ func getWorkouts(context *gin.Context) {
 	context.IndentedJSON(http.StatusOK, returnObj)
 }
 
-func getInitWorkout(context *gin.Context) {
-	weekPlan := workout.GenerateInitialWeekPlan(config.BaseTemplate)
+func generateWorkout(context *gin.Context) {
+	increaseVolumeParam := context.Query("increaseVolume")
+	var increaseVolume bool
+	if increaseVolumeParam != "" {
+		_increaseVolume, err := strconv.ParseBool(increaseVolumeParam)
+		increaseVolume = _increaseVolume
+		errors.CheckErr(err)
+	}
+	weekPlan := workout.GenerateWeekPlan(config.BaseTemplate, increaseVolume)
 	context.IndentedJSON(http.StatusOK, weekPlan)
 }
 
@@ -52,6 +61,6 @@ func main() {
 	router := gin.Default()
 	router.GET("/this-week", getCurrWeeksTimestamp)
 	router.GET("/prev-week", getPrevWeeksTimestamp)
-	router.GET("/workouts", getInitWorkout)
+	router.GET("/generate", generateWorkout)
 	router.Run("localhost:8989")
 }

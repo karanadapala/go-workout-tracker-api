@@ -35,10 +35,10 @@ func CalculateIncrease(number int, increase Increase) int {
 	return int(math.Ceil(float64(number) * float64(increase)))
 }
 
-func GenerateInitialWeekPlan(baseTemplate config.BaseWeeklyTemplate) config.WeeklyPlan {
+func GenerateWeekPlan(baseTemplate config.BaseWeeklyTemplate, increaseVolume bool) config.WeeklyPlan {
 	generatedWeeklyBasePlan := make(config.WeeklyPlan)
 	for day, baseWorkout := range config.BaseTemplate {
-		generatedWeeklyBasePlan[day] = GenerateDayPlan(baseWorkout.MainWorkout, false, day)
+		generatedWeeklyBasePlan[day] = GenerateDayPlan(baseWorkout.MainWorkout, increaseVolume, day)
 	}
 
 	return generatedWeeklyBasePlan
@@ -100,11 +100,11 @@ func ModifyExerciseDetails(workoutId config.WorkoutNameIds, increaseVolume bool,
 	prevWeekSqlStatement := fmt.Sprintf("SELECT * FROM workouts WHERE week='%s'", prevWeek)
 	prevWeekPlan := dbservice.GetWeeksWorkout(prevWeekSqlStatement)
 
-	fmt.Printf("exercise: %s\n", exerciseInfo.Name)
-	fmt.Printf("min reps: %d\n", minReps)
-	fmt.Printf("min sets: %d\n", minSets)
-	fmt.Printf("max reps: %d\n", maxReps)
-	fmt.Printf("max sets: %d\n", maxSets)
+	// fmt.Printf("exercise: %s\n", exerciseInfo.Name)
+	// fmt.Printf("min reps: %d\n", minReps)
+	// fmt.Printf("min sets: %d\n", minSets)
+	// fmt.Printf("max reps: %d\n", maxReps)
+	// fmt.Printf("max sets: %d\n", maxSets)
 	if prevWeekPlan == nil {
 		newExercisePlan = config.DeterminedWorkout{
 			Name:        exerciseInfo.Name,
