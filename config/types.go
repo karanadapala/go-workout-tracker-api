@@ -71,7 +71,7 @@ const (
 	LateralRaises         WorkoutNameIds = "lateral-raises"
 )
 
-type WorkoutConfig map[WorkoutNameIds]struct {
+type WorkoutConfigValue struct {
 	Name        string
 	Tool        ToolTags
 	Category    []WorkoutTags
@@ -81,6 +81,8 @@ type WorkoutConfig map[WorkoutNameIds]struct {
 	WorkoutType WorkoutType
 	SetRange    SetRange
 }
+
+type WorkoutConfig map[WorkoutNameIds]WorkoutConfigValue
 
 type ToolTags string
 
@@ -162,15 +164,4 @@ type BaseRestDay struct {
 }
 
 // Define the interface for BaseWeeklyTemplate
-type BaseWeeklyTemplate map[TDay]BaseWorkDayOrRestDay
-
-// Create an empty interface to allow either BaseWorkDay or BaseRestDay
-type BaseWorkDayOrRestDay interface {
-	isBaseWorkDayOrRestDay()
-}
-
-// Implement the method for BaseWorkDay to satisfy the interface
-func (b BaseWorkDay) isBaseWorkDayOrRestDay() {}
-
-// Implement the method for BaseRestDay to satisfy the interface
-func (b BaseRestDay) isBaseWorkDayOrRestDay() {}
+type BaseWeeklyTemplate map[TDay]BaseWorkDay

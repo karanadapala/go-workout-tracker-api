@@ -1,6 +1,7 @@
 package main
 
 import (
+	"goworkouttrackerapi/config"
 	dbservice "goworkouttrackerapi/dbService"
 	"goworkouttrackerapi/workout"
 
@@ -42,10 +43,15 @@ func getWorkouts(context *gin.Context) {
 	context.IndentedJSON(http.StatusOK, returnObj)
 }
 
+func getInitWorkout(context *gin.Context) {
+	weekPlan := workout.GenerateInitialWeekPlan(config.BaseTemplate)
+	context.IndentedJSON(http.StatusOK, weekPlan)
+}
+
 func main() {
 	router := gin.Default()
 	router.GET("/this-week", getCurrWeeksTimestamp)
 	router.GET("/prev-week", getPrevWeeksTimestamp)
-	router.GET("/workouts", getWorkouts)
+	router.GET("/workouts", getInitWorkout)
 	router.Run("localhost:8989")
 }

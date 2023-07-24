@@ -37,7 +37,7 @@ var BaseTemplate = BaseWeeklyTemplate{
 			"mace-1h-360",
 		},
 	},
-	"sunday": BaseRestDay{
-		IsRestDay: true,
+	"sunday": BaseWorkDay{
+		MainWorkout: []WorkoutNameIds{},
 	},
 }
